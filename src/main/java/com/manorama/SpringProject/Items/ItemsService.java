@@ -35,10 +35,8 @@ public class ItemsService {
         Optional<Items> fetchedItem = itemsRepository.findById(items.getId());
         if (fetchedItem.isPresent()) {
             Items item = fetchedItem.get();
-            item.setName(items.getName());
-            item.setCategory(items.getCategory());
-            item.setPrice(items.getPrice());
-            itemsRepository.save(item);
+            items.setId(item.getId());
+            itemsRepository.save(items);
         }
     }
 }
