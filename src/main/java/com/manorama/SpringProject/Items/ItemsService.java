@@ -30,4 +30,15 @@ public class ItemsService {
     public Optional<Items> getItemsById(Long id) {
         return itemsRepository.findById(id);
     }
+
+    public void updateItem(Items items) {
+        Optional<Items> fetchedItem = itemsRepository.findById(items.getId());
+        if (fetchedItem.isPresent()) {
+            Items item = fetchedItem.get();
+            item.setName(items.getName());
+            item.setCategory(items.getCategory());
+            item.setPrice(items.getPrice());
+            itemsRepository.save(item);
+        }
+    }
 }

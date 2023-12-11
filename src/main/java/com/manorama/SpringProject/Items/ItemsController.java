@@ -29,4 +29,10 @@ public class ItemsController {
     public void deleteItems(@RequestParam Long id) {
         itemsService.deleteItem(id);
     }
+
+    @PutMapping
+    public void updateItems(@RequestBody Items item) {
+        itemsService.updateItem(item);
+    }
+
 }
