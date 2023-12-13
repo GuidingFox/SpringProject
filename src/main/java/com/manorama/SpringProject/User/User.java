@@ -10,33 +10,40 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long personalNo;
+    private long id;
+    private int personalNo;
     private String name;
     private String username;
     private String password;
-
-
-    public User(long personalNo, String name, String username, String password) {
+    public User(int personalNo, String name, String username, String password) {
         this.personalNo = personalNo;
         this.name = name;
         this.username = username;
         this.password = password;
     }
-
     public User(String name, String username, String password) {
         this.name = name;
         this.username = username;
         this.password = password;
     }
 
-    public User() {}
 
+    public User() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getPersonalNo() {
         return personalNo;
     }
 
-    public void setPersonalNo(long personalNo) {
+    public void setPersonalNo(int personalNo) {
         this.personalNo = personalNo;
     }
 
