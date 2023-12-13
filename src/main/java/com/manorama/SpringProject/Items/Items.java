@@ -16,6 +16,17 @@ public class Items {
     private String category;
     private float price;
 
+
+    public float getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(float quantity) {
+        this.quantity = quantity;
+    }
+
+    private float quantity;
+
     public String getName() {
         return name;
     }
