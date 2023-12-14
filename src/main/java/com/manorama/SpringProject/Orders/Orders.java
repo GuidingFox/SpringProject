@@ -1,19 +1,36 @@
 package com.manorama.SpringProject.Orders;
 
-import java.time.LocalDate;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
-public class Order {
+import java.time.LocalDate;
+@Entity
+public class Orders {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private long item_id;
     private long user_id;
     private LocalDate date;
     private int quantity;
 
-    public Order(long item_id, long user_id, LocalDate date, int quantity) {
+    public Orders(long item_id, long user_id, LocalDate date, int quantity) {
         this.item_id = item_id;
         this.user_id = user_id;
         this.date = date;
         this.quantity = quantity;
+    }
+
+    public Orders(long item_id, long user_id, int quantity) {
+        this.item_id = item_id;
+        this.user_id = user_id;
+        this.quantity = quantity;
+    }
+
+    public Orders() {
+
     }
 
     public long getId() {
@@ -54,6 +71,10 @@ public class Order {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
