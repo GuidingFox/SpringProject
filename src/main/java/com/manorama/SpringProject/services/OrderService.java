@@ -1,6 +1,7 @@
 package com.manorama.SpringProject.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,9 @@ import net.bytebuddy.utility.RandomString;
 public class OrderService {
 	private final OrderRepository orderRepository;
 	private final ItemsRepository itemsRepository;
-	
 
 	@Autowired
-	public OrderService(OrderRepository orderRepository,ItemsRepository itemsRepository) {
+	public OrderService(OrderRepository orderRepository, ItemsRepository itemsRepository) {
 		this.orderRepository = orderRepository;
 		this.itemsRepository = itemsRepository;
 	}
@@ -59,16 +59,15 @@ public class OrderService {
 	}
 
 	public void createAnOrder(OrderModel order) {
-		
-		List<ItemModel> items = order.getItems();
-		List<Long> itemIds = items.stream().map(item-> item.getItem_id()).collect(Collectors.toList());
-		List<Items> itemsFromDb = itemsRepository.findAllById(itemIds);
-	    String generatedString = RandomString.make(10);
-	    List<Orders> orders = null;
 
-		
-		for (ItemModel item: items) {
-			for (Items itemFromDb: itemsFromDb) {
+		List<ItemModel> items = order.getItems();
+		List<Long> itemIds = items.stream().map(item -> item.getItem_id()).collect(Collectors.toList());
+		List<Items> itemsFromDb = itemsRepository.findAllById(itemIds);
+		String generatedString = RandomString.make(10);
+		List<Orders> orders = new ArrayList<Orders>();
+
+		for (ItemModel item : items) {
+			for (Items itemFromDb : itemsFromDb) {
 				if (itemFromDb.getId() == item.getItem_id()) {
 					Orders newOrder = new Orders();
 					newOrder.setOrderId(generatedString);
@@ -76,16 +75,13 @@ public class OrderService {
 					newOrder.setAmount(item.getQuantity() * itemFromDb.getPrice());
 					newOrder.setItem_id(item.getItem_id());
 					newOrder.setQuantity(item.getQuantity());
+					newOrder.setPaymentStatus("pending");
+					newOrder.setStatus("pending");
+					newOrder.setCategory(itemFromDb.getCategory());
 					orders.add(newOrder);
 				}
 			}
 		}
 		orderRepository.saveAll(orders);
-		
-//	    for (ItemModel item: items) {
-//	    	Long item_id = item.getItem_id();
-//	    	Item itemFromDb = itemsRepository.findAllById(null);
-//	    }
-//		newOrder.set
 	}
 }

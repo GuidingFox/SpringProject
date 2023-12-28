@@ -46,4 +46,8 @@ public class ItemsService {
 			itemsRepository.save(items);
 		}
 	}
+	
+	public List<Items> getItemsByCategory(String category) {
+		return itemsRepository.findAllByCategory(category);
+	}
 }
