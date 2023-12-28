@@ -2,7 +2,7 @@ package com.manorama.SpringProject.repositories;
 
 import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.Summary.MonthlySummary;
-import com.manorama.SpringProject.models.Orders;
+import com.manorama.SpringProject.entities.Orders;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

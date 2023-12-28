@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.manorama.SpringProject.models.User;
+import com.manorama.SpringProject.entities.User;
 import com.manorama.SpringProject.services.UserService;
 
 @RestController

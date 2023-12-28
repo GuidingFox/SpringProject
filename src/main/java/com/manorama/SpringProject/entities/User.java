@@ -1,4 +1,4 @@
-package com.manorama.SpringProject.models;
+package com.manorama.SpringProject.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,10 +1,8 @@
-package com.manorama.SpringProject.controllers;
+package com.manorama.SpringProject.services;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -12,29 +10,18 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.json.simple.JSONObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
 import com.stripe.Stripe;
-import com.stripe.exception.StripeException;
-import com.stripe.model.checkout.Session;
-import com.stripe.param.checkout.SessionCreateParams;
-import com.stripe.param.checkout.SessionCreateParams.LineItem;
 
-@RestController
-@RequestMapping("/api/pay")
-public class Payments {
+@Service
+public class PaymentService {
 
 	public HttpResponse<String> sendHttpRequest(String obj) throws KeyManagementException, NoSuchAlgorithmException,
 			URISyntaxException, IOException, InterruptedException {
@@ -66,7 +53,6 @@ public class Payments {
 
 	}
 
-	
 	private String getRequestString(float amount, int quantity, String url) {
 		StringBuilder req = new StringBuilder();
 		req.append("mode=payment&");
@@ -77,22 +63,28 @@ public class Payments {
 		req.append("line_items[0][price_data][currency]=inr&");
 		req.append("line_items[0][quantity]=" + quantity + "&");
 		return req.toString();
-		
 	}
 
-	@PostMapping("/checkout")
-	public ResponseEntity<Object> createCheckoutSession() throws StripeException, IOException, InterruptedException,
-			KeyManagementException, NoSuchAlgorithmException, URISyntaxException {
+	public ResponseEntity getCheckout(float amount) {
 		Stripe.apiKey = "sk_test_51OPIddSBY2c1xYHV84jmsahFjlMNE09nOJZxU7y87yM0NdWlo6JZlptYnVZPt7075DgLEgXz0bHNi8cmvIeYrVLX00W2DrcWXU";
 		String YOUR_DOMAIN = "http://localhost:3000";
 		String reqData = getRequestString(123, 1, YOUR_DOMAIN);
 
-		HttpResponse<String> response = sendHttpRequest(reqData);
+		HttpResponse<String> response;
+		try {
+			response = sendHttpRequest(reqData);
+			System.out.println("Response Code: " + response.statusCode());
+			System.out.println("Response Body: " + response.body());
 
-		System.out.println("Response Code: " + response.statusCode());
-		System.out.println("Response Body: " + response.body());
+			return ResponseEntity.status(302).body(response.body());
+
+		} catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException | IOException
+				| InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return ResponseEntity.internalServerError().body(null);
+		}
 		
-		return ResponseEntity.ok().body(response.body());
 
 	}
 }

@@ -1,8 +1,9 @@
-package com.manorama.SpringProject.models;
+package com.manorama.SpringProject.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
+
 import org.springframework.data.annotation.Id;
 
 @Entity
@@ -15,6 +16,14 @@ public class Items {
 	private String name;
 	private String category;
 	private float price;
+
+//	@ManyToMany
+//	@JoinTable(
+//			name = "order_items",
+//			joinColumns = @JoinColumn(name = "item_id"),
+//			inverseJoinColumns = @JoinColumn(name = "order_id")
+//			)
+//	private Set<Orders> orders = new HashSet<>();
 
 	public float getQuantity() {
 		return quantity;

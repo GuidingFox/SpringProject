@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.manorama.SpringProject.models.Items;
+import com.manorama.SpringProject.entities.Items;
 import com.manorama.SpringProject.services.ItemsService;
 
 @RestController

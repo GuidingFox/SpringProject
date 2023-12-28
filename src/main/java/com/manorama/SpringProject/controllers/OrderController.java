@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.Summary.MonthlySummary;
-import com.manorama.SpringProject.models.Items;
-import com.manorama.SpringProject.models.Orders;
+import com.manorama.SpringProject.entities.Items;
+import com.manorama.SpringProject.entities.Orders;
+import com.manorama.SpringProject.models.OrderModel;
 import com.manorama.SpringProject.services.ItemsService;
 import com.manorama.SpringProject.services.OrderService;
 
@@ -58,18 +59,23 @@ public class OrderController {
 		orderService.deleteOrder(id);
 	}
 
+//	@PostMapping("/add")
+//	public void createOrders(@RequestBody List<Orders> orders) {
+//		Items item;
+//		float amount;
+//		System.out.println(orders);
+//		LocalDate currDate = LocalDate.now();
+//		for (Orders order : orders) {
+//			item = itemsService.getItemsById(order.getItem_id()).get();
+//			amount = item.getPrice() * order.getQuantity();
+//			order.setDate(currDate);
+//		}
+//		orderService.addOrders(orders);
+//	}
+
 	@PostMapping("/add")
-	public void createOrders(@RequestBody List<Orders> orders) {
-		Items item;
-		float amount;
-		System.out.println(orders);
-		LocalDate currDate = LocalDate.now();
-		for (Orders order : orders) {
-			item = itemsService.getItemsById(order.getItem_id()).get();
-			amount = item.getPrice() * order.getQuantity();
-			order.setDate(currDate);
-		}
-		orderService.addOrders(orders);
+	public void createOrder(@RequestBody OrderModel order) {
+		orderService.createAnOrder(order);
 	}
 
 	@GetMapping("/summary/monthly")

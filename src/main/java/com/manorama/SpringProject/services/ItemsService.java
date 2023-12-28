@@ -3,7 +3,7 @@ package com.manorama.SpringProject.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.manorama.SpringProject.models.Items;
+import com.manorama.SpringProject.entities.Items;
 import com.manorama.SpringProject.repositories.ItemsRepository;
 
 import java.util.List;

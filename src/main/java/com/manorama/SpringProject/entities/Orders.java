@@ -1,22 +1,41 @@
-package com.manorama.SpringProject.models;
+package com.manorama.SpringProject.entities;
+
+import java.time.LocalDate;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import java.time.LocalDate;
+import lombok.Data;
 
 @Entity
+@Data
 public class Orders {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	private String orderId;
 	private long item_id;
 	private long user_id;
 	private LocalDate date;
 	private int quantity;
 	private float amount;
+	private String status;
+	private String category;
+	private String paymentStatus;
+
+//	@ManyToMany(mappedBy = "order_items")
+//	private Set<Items> items = new HashSet<>();
 
 	public Orders(long item_id, long user_id, LocalDate date, int quantity, float amount) {
 		this.item_id = item_id;
