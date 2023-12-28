@@ -12,7 +12,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Use a lightweight base image for the application runtime
-FROM adoptopenjdk:17-jre-hotspot AS runtime
+FROM eclipse-temurin:11 AS runtime
 
 # Set the working directory inside the container
 WORKDIR /app
