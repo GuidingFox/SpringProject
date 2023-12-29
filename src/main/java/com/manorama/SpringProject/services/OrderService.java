@@ -1,41 +1,40 @@
 package com.manorama.SpringProject.services;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.manorama.SpringProject.Summary.DailySummary;
-import com.manorama.SpringProject.Summary.MonthlySummary;
 import com.manorama.SpringProject.entities.Items;
+import com.manorama.SpringProject.entities.OrderItems;
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.ItemModel;
 import com.manorama.SpringProject.models.OrderModel;
 import com.manorama.SpringProject.repositories.ItemsRepository;
+import com.manorama.SpringProject.repositories.OrderItemRepository;
 import com.manorama.SpringProject.repositories.OrderRepository;
-
-import net.bytebuddy.utility.RandomString;
 
 @Service
 public class OrderService {
 	private final OrderRepository orderRepository;
 	private final ItemsRepository itemsRepository;
+	private final OrderItemRepository orderItemRepository;
 
 	@Autowired
-	public OrderService(OrderRepository orderRepository, ItemsRepository itemsRepository) {
+	public OrderService(OrderRepository orderRepository, ItemsRepository itemsRepository,
+			OrderItemRepository orderItemRepository) {
 		this.orderRepository = orderRepository;
 		this.itemsRepository = itemsRepository;
+		this.orderItemRepository = orderItemRepository;
 	}
 
 	public List<Orders> getAllOrders() {
 		return orderRepository.findAll();
 	}
 
-	public List<Orders> getOrdersByUser(Long id) {
-		return orderRepository.findAllById(List.of(id));
+	public Optional<Orders> getOrdersByUser(Long id) {
+		return orderRepository.findById(id);
 	}
 
 	public void createOrder(Orders order) {
@@ -50,38 +49,29 @@ public class OrderService {
 		orderRepository.saveAll(orders);
 	}
 
-	public MonthlySummary getMonthlySummary(long user_id) {
-		return orderRepository.getUserMonthlySummary(user_id);
-	}
-
-	public DailySummary getDailySummary(long user_id) {
-		return orderRepository.getUserDailySummary(user_id);
+//	public MonthlySummary getMonthlySummary(long user_id) {
+//		return orderRepository.getUserMonthlySummary(user_id);
+//	}
+//
+//	public DailySummary getDailySummary(long user_id) {
+//		return orderRepository.getUserDailySummary(user_id);
+//	}
+	
+	public List<OrderItems> getOrderTest() {
+		List<OrderItems> ordItems = orderItemRepository.findAllById(List.of(14L));
+		return ordItems;
 	}
 
 	public void createAnOrder(OrderModel order) {
-
+		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
 		List<ItemModel> items = order.getItems();
-		List<Long> itemIds = items.stream().map(item -> item.getItem_id()).collect(Collectors.toList());
-		List<Items> itemsFromDb = itemsRepository.findAllById(itemIds);
-		String generatedString = RandomString.make(10);
-		List<Orders> orders = new ArrayList<Orders>();
+		items.forEach(item-> {
+			Optional<Items>itemFromDb = itemsRepository.findById(item.getItem_id());
+			if (itemFromDb.isPresent()) {
+				System.out.println(itemFromDb.get().getName());
+				orderItemRepository.save(new OrderItems(savedOrder, itemFromDb.get(), item.getQuantity()));
 
-		for (ItemModel item : items) {
-			for (Items itemFromDb : itemsFromDb) {
-				if (itemFromDb.getId() == item.getItem_id()) {
-					Orders newOrder = new Orders();
-					newOrder.setOrderId(generatedString);
-					newOrder.setDate(LocalDate.now());
-					newOrder.setAmount(item.getQuantity() * itemFromDb.getPrice());
-					newOrder.setItem_id(item.getItem_id());
-					newOrder.setQuantity(item.getQuantity());
-					newOrder.setPaymentStatus("pending");
-					newOrder.setStatus("pending");
-					newOrder.setCategory(itemFromDb.getCategory());
-					orders.add(newOrder);
-				}
 			}
-		}
-		orderRepository.saveAll(orders);
+		});
 	}
 }

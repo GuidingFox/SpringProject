@@ -37,6 +37,10 @@ public class OrderModel {
 		this.items = items;
 	}
 
+	public OrderModel() {
+		// TODO Auto-generated constructor stub
+	}
+
 	public void setItems(List<ItemModel> items) {
 		this.items = items;
 	}
