@@ -6,6 +6,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.manorama.SpringProject.entities.Items;
@@ -22,13 +23,15 @@ public class OrderService {
 	private final OrderRepository orderRepository;
 	private final ItemsRepository itemsRepository;
 	private final OrderItemRepository orderItemRepository;
+	private final PaymentService paymentService;
 
 	@Autowired
 	public OrderService(OrderRepository orderRepository, ItemsRepository itemsRepository,
-			OrderItemRepository orderItemRepository) {
+			OrderItemRepository orderItemRepository, PaymentService paymentService) {
 		this.orderRepository = orderRepository;
 		this.itemsRepository = itemsRepository;
 		this.orderItemRepository = orderItemRepository;
+		this.paymentService = paymentService;
 	}
 
 	public List<Orders> getAllOrders() {
@@ -51,25 +54,15 @@ public class OrderService {
 		orderRepository.saveAll(orders);
 	}
 
-//	@Transactional
-//	public void deleteOrder(Long orderId) {
-////		orderRepository.deleteById(orderId);
-//		try {
-//			Orders order = orderRepository.findById(orderId).get();
-//			System.out.println(order.getId());
-//			List<OrderItems> orderItems = orderItemRepository.findAllByOrders(order);
-//			orderItems.forEach(ordItem -> {
-//				System.out.println(ordItem.getId());
-//				ordItem.setOrders(null);
-//				ordItem.setItems(null);
-//			});
-//			orderItemRepository.saveAll(orderItems);
-//			System.out.println("test");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-
+	public ResponseEntity createCheckout(Long id) {
+		List<OrderItems> ordItems = orderItemRepository.findAllByOrders(orderRepository.findById(id).get());
+		float totalAmt = 0;
+		for (OrderItems ordItem : ordItems) {
+			totalAmt += ordItem.getItems().getPrice() * ordItem.getQuantity();
+		}
+		return paymentService.getCheckout(totalAmt);
+		
+	}
 //	public MonthlySummary getMonthlySummary(long user_id) {
 //		return orderRepository.getUserMonthlySummary(user_id);
 //	}
@@ -89,7 +82,6 @@ public class OrderService {
 		items.forEach(item -> {
 			Optional<Items> itemFromDb = itemsRepository.findById(item.getItem_id());
 			if (itemFromDb.isPresent()) {
-				System.out.println(itemFromDb.get().getName());
 				orderItemRepository.save(new OrderItems(savedOrder, itemFromDb.get(), item.getQuantity()));
 			}
 		});
