@@ -1,14 +1,18 @@
 package com.manorama.SpringProject.entities;
 
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Data
@@ -20,8 +24,17 @@ public class User {
 	private int personalNo;
 	private String name;
 	private String username;
+	private String email;
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	private String password;
-	private String userType;
+	
 
 //	public User(int personalNo, String name, String username, String password, String userType) {
 //		this.personalNo = personalNo;
@@ -38,12 +51,12 @@ public class User {
 //		this.userType = userType;
 //	}
 
-	public String getUserType() {
-		return userType;
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
 	}
 
 	public long getId() {
@@ -85,4 +98,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "users_roles",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    private Set<Role> roles;
 }
