@@ -3,6 +3,8 @@ package com.manorama.SpringProject.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,6 +51,25 @@ public class OrderService {
 		orderRepository.saveAll(orders);
 	}
 
+//	@Transactional
+//	public void deleteOrder(Long orderId) {
+////		orderRepository.deleteById(orderId);
+//		try {
+//			Orders order = orderRepository.findById(orderId).get();
+//			System.out.println(order.getId());
+//			List<OrderItems> orderItems = orderItemRepository.findAllByOrders(order);
+//			orderItems.forEach(ordItem -> {
+//				System.out.println(ordItem.getId());
+//				ordItem.setOrders(null);
+//				ordItem.setItems(null);
+//			});
+//			orderItemRepository.saveAll(orderItems);
+//			System.out.println("test");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+
 //	public MonthlySummary getMonthlySummary(long user_id) {
 //		return orderRepository.getUserMonthlySummary(user_id);
 //	}
@@ -56,21 +77,20 @@ public class OrderService {
 //	public DailySummary getDailySummary(long user_id) {
 //		return orderRepository.getUserDailySummary(user_id);
 //	}
-	
-	public List<OrderItems> getOrderTest() {
-		List<OrderItems> ordItems = orderItemRepository.findAllById(List.of(14L));
-		return ordItems;
+
+	public Optional<Orders> getOrderTest(Long orderId) {
+		Optional<Orders> order = orderRepository.findById(orderId);
+		return order;
 	}
 
 	public void createAnOrder(OrderModel order) {
 		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
 		List<ItemModel> items = order.getItems();
-		items.forEach(item-> {
-			Optional<Items>itemFromDb = itemsRepository.findById(item.getItem_id());
+		items.forEach(item -> {
+			Optional<Items> itemFromDb = itemsRepository.findById(item.getItem_id());
 			if (itemFromDb.isPresent()) {
 				System.out.println(itemFromDb.get().getName());
 				orderItemRepository.save(new OrderItems(savedOrder, itemFromDb.get(), item.getQuantity()));
-
 			}
 		});
 	}

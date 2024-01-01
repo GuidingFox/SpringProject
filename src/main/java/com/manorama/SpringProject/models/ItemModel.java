@@ -1,8 +1,6 @@
 package com.manorama.SpringProject.models;
 
-import lombok.Data;
 
-@Data
 public class ItemModel {
 	private long item_id;
 	private int quantity;

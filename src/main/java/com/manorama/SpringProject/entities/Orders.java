@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,17 +26,22 @@ public class Orders {
 	private String category;
 	private String paymentStatus;
 
-	@OneToMany(mappedBy = "orders")
-	@JsonIgnore
+	@OneToMany(mappedBy = "orders", cascade = CascadeType.ALL)
 	private Set<OrderItems> items = new HashSet<>();
+
+	public Set<OrderItems> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItems> items) {
+		this.items = items;
+	}
 
 	public Orders() {
 		this.status = "pending";
 		this.date = LocalDate.now();
 		this.paymentStatus = "pending";
 	}
-	
-	
 
 	public Orders(long user_id, String category) {
 		this.user_id = user_id;
@@ -44,8 +50,6 @@ public class Orders {
 		this.category = category;
 		this.paymentStatus = "pending";
 	}
-
-
 
 	public long getId() {
 		return id;

@@ -16,13 +16,15 @@ public class OrderItems {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonIgnore
 	private long id;
 
+	@JsonIgnore
 	@ManyToOne(cascade = CascadeType.ALL, optional = false)
 	@JoinColumn(name = "order_id")
 	private Orders orders;
 
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "item_id")
 	private Items items;
 

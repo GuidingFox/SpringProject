@@ -22,12 +22,12 @@ import com.manorama.SpringProject.services.OrderService;
 @RequestMapping("/api/orders")
 public class OrderController {
 	private final OrderService orderService;
-	private final ItemsService itemsService;
-	
+//	private final ItemsService itemsService;
+
 	@Autowired
-	public OrderController(OrderService orderService, ItemsService itemsService) {
+	public OrderController(OrderService orderService) {
 		this.orderService = orderService;
-		this.itemsService = itemsService;
+//		this.itemsService = itemsService;
 	}
 
 	@GetMapping
@@ -35,46 +35,16 @@ public class OrderController {
 		return orderService.getAllOrders();
 	}
 
-	@GetMapping("/user/{id}")
-	public List<OrderItems> getOrdersByUser(@PathVariable Long id) {
-		System.out.println(id);
-		return orderService.getOrderTest();
+	@GetMapping("/{id}")
+	public Optional<Orders> getOrdersByUser(@PathVariable Long id) {
+		return orderService.getOrderTest(id);
 	}
-	
-//	@GetMapping
-//	public OrderItems getOrdersTest() {
-//		return order
-//	}
-
-//	@PostMapping
-//	public void createOrder(@RequestBody Orders orders) {
-//		orders.setDate(LocalDate.now());
-//		Items item = itemsService.getItemsById(orders.getItem_id()).get();
-////		float amount = item.getPrice() * orders.getQuantity();
-////		orders.setAmount(amount);
-//		orderService.createOrder(orders);
-//
-//	}
 
 	@DeleteMapping("/{id}")
 	public void deleteOrder(@PathVariable Long id) {
 		orderService.deleteOrder(id);
+//		orderService
 	}
-	
-
-//	@PostMapping("/add")
-//	public void createOrders(@RequestBody List<Orders> orders) {
-//		Items item;
-//		float amount;
-//		System.out.println(orders);
-//		LocalDate currDate = LocalDate.now();
-//		for (Orders order : orders) {
-//			item = itemsService.getItemsById(order.getItem_id()).get();
-//			amount = item.getPrice() * order.getQuantity();
-//			order.setDate(currDate);
-//		}
-//		orderService.addOrders(orders);
-//	}
 
 	@PostMapping("/add")
 	public void createOrder(@RequestBody OrderModel order) {

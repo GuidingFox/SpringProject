@@ -2,10 +2,7 @@ package com.manorama.SpringProject.models;
 
 import java.util.List;
 
-import lombok.Data;
 
-
-@Data
 public class OrderModel {
 	private String category;
 	private long user_id;

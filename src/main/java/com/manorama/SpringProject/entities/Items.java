@@ -29,7 +29,6 @@ public class Items {
 	private float price;
 
 	@OneToMany(mappedBy = "items")
-	@JsonIgnore
 	private Set<OrderItems> orders = new HashSet<>();
 
 	public float getQuantity() {
