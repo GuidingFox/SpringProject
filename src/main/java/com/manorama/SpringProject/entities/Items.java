@@ -72,7 +72,6 @@ public class Items {
 	}
 
 	public boolean isIncomplete() {
-		System.out.println("hello" + this.getCategory());
 		if (this.getCategory() == null || this.getName() == null || this.getPrice() == 0 || this.getQuantity() == 0) {
 			return true;
 		} else if (this.getCategory() == "" || this.getName() == "" || this.getPrice() == 0
