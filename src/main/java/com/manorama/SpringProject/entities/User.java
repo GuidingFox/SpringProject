@@ -12,11 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-<<<<<<< HEAD
-import lombok.Data;
 
-=======
->>>>>>> normalization
 @Entity
 public class User {
 
