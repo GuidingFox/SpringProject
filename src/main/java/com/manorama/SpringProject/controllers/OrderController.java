@@ -59,10 +59,10 @@ public class OrderController {
 		return orderService.createCheckout(Long.parseLong(order_id));
 	}
 
-//	@GetMapping("/summary/monthly")
-//	public MonthlySummary getMonthlySummary(@RequestParam long user_id) {
-//		return orderService.getMonthlySummary(user_id);
-//	}
+	@GetMapping("/summary/monthly")
+	public Object getMonthlySummary(@RequestParam long user_id) {
+		return orderService.getMonthlySummary(user_id);
+	}
 //
 //	@GetMapping("/summary/daily")
 //	public DailySummary getDailySummary(@RequestParam long user_id) {

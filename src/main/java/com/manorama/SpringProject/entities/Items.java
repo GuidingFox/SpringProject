@@ -15,10 +15,8 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 @Entity
 public class Items {
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,5 +69,18 @@ public class Items {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public boolean isIncomplete() {
+		System.out.println("hello" + this.getCategory());
+		if (this.getCategory() == null || this.getName() == null || this.getPrice() == 0 || this.getQuantity() == 0) {
+			return true;
+		} else if (this.getCategory() == "" || this.getName() == "" || this.getPrice() == 0
+				|| this.getQuantity() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

@@ -28,34 +28,44 @@ public class AuthServiceImpl implements AuthService {
 	private PasswordEncoder passwordEncoder;
 	private JwtTokenProvider jwtTokenProvider;
 
-	public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,RoleRepository roleRepository,
+	public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository,
+			RoleRepository roleRepository,
 
 			PasswordEncoder passwordEncoder, JwtTokenProvider jwtTokenProvider) {
 		this.authenticationManager = authenticationManager;
 		this.userRepository = userRepository;
-        this.roleRepository=roleRepository;
+		this.roleRepository = roleRepository;
 		this.passwordEncoder = passwordEncoder;
 		this.jwtTokenProvider = jwtTokenProvider;
 	}
 
 	@Override
 	public String login(LoginDto loginDto) {
+
+		if (loginDto.getUsernameOrEmail() == "" || loginDto.getPassword() == "") {
+			return null;
+		}
+
+		if (loginDto.getUsernameOrEmail() == null || loginDto.getPassword() == null) {
+			return null;
+		}
 		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
 				loginDto.getUsernameOrEmail(), loginDto.getPassword());
-		
-		//auth.setAuthenticated(true);
+
+		// auth.setAuthenticated(true);
 		try {
 			Authentication authentication = authenticationManager.authenticate(auth);
 			String token = jwtTokenProvider.generateToken(authentication);
-	       
+
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			return token;
-		}catch(Exception e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+//			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		return null;
-		
+
 	}
 
 	@Override
@@ -72,12 +82,11 @@ public class AuthServiceImpl implements AuthService {
 		user.setPersonalNo(registerDto.getPersonalNo());
 		user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-		
 		Set<Role> roles = new HashSet<>();
-        Role userRole = roleRepository.findByName("ROLE_USER").get();
-        roles.add(userRole);
-        user.setRoles(roles);
-        
+		Role userRole = roleRepository.findByName("ROLE_USER").get();
+		roles.add(userRole);
+		user.setRoles(roles);
+
 		userRepository.save(user);
 
 		return "User registered successfully!.";

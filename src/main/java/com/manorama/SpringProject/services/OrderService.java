@@ -3,12 +3,11 @@ package com.manorama.SpringProject.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.manorama.SpringProject.Summary.MonthlySummary;
 import com.manorama.SpringProject.entities.Items;
 import com.manorama.SpringProject.entities.OrderItems;
 import com.manorama.SpringProject.entities.Orders;
@@ -61,11 +60,16 @@ public class OrderService {
 			totalAmt += ordItem.getItems().getPrice() * ordItem.getQuantity();
 		}
 		return paymentService.getCheckout(totalAmt);
-		
+
 	}
 //	public MonthlySummary getMonthlySummary(long user_id) {
 //		return orderRepository.getUserMonthlySummary(user_id);
 //	}
+
+	public MonthlySummary getMonthlySummary(long user_id) {
+		MonthlySummary data = orderRepository.userSummary(user_id);
+		return data;
+	}
 //
 //	public DailySummary getDailySummary(long user_id) {
 //		return orderRepository.getUserDailySummary(user_id);

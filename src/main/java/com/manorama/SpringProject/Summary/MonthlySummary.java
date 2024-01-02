@@ -10,14 +10,14 @@ public class MonthlySummary {
 	}
 
 	public int getDay() {
-		return day;
+		return month;
 	}
 
 	public void setDay(int day) {
-		this.day = day;
+		this.month = day;
 	}
 
-	public float getTotalAmount() {
+	public double getTotalAmount() {
 		return totalAmount;
 	}
 
@@ -26,12 +26,29 @@ public class MonthlySummary {
 	}
 
 	private long user_id;
-	private int day;
-	private float totalAmount;
+	private int month;
+	private double totalAmount;
+	private int year;
 
-	public MonthlySummary(long user_id, int day, float totalAmount) {
+	public MonthlySummary(long user_id, int month, float totalAmount, int year) {
 		this.user_id = user_id;
-		this.day = day;
+		this.month = month;
 		this.totalAmount = totalAmount;
+		this.year = year;
+	}
+	
+	public MonthlySummary(int month, int year, double totalAmount, long user_id) {
+		this.user_id = user_id;
+		this.month = month;
+		this.totalAmount = totalAmount;
+		this.year = year;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 }

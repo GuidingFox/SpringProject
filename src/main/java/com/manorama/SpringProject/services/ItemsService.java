@@ -1,6 +1,7 @@
 package com.manorama.SpringProject.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.manorama.SpringProject.entities.Items;
@@ -22,8 +23,18 @@ public class ItemsService {
 		return itemsRepository.findAll();
 	}
 
-	public void addItem(Items item) {
-		itemsRepository.save(item);
+	public ResponseEntity addItem(Items item) {
+		if (item.isIncomplete()) {
+			return ResponseEntity.unprocessableEntity().build();
+		}
+		try {
+			Items savedItem = itemsRepository.save(item);
+			return ResponseEntity.ok(savedItem);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return ResponseEntity.internalServerError().build();
+			
+		}
 	}
 
 	public void addItems(List<Items> items) {
@@ -38,15 +49,17 @@ public class ItemsService {
 		return itemsRepository.findById(id);
 	}
 
-	public void updateItem(Items items) {
+	public Items updateItem(Items items) {
 		Optional<Items> fetchedItem = itemsRepository.findById(items.getId());
 		if (fetchedItem.isPresent()) {
 			Items item = fetchedItem.get();
 			items.setId(item.getId());
-			itemsRepository.save(items);
+			Items updatedItem = itemsRepository.save(items);
+			return updatedItem;
 		}
+		return null;
 	}
-	
+
 	public List<Items> getItemsByCategory(String category) {
 		return itemsRepository.findAllByCategory(category);
 	}
