@@ -2,10 +2,7 @@ package com.manorama.SpringProject.models;
 
 import java.util.List;
 
-import lombok.Data;
 
-
-@Data
 public class OrderModel {
 	private String category;
 	private long user_id;
@@ -35,6 +32,10 @@ public class OrderModel {
 		this.category = category;
 		this.user_id = user_id;
 		this.items = items;
+	}
+
+	public OrderModel() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public void setItems(List<ItemModel> items) {

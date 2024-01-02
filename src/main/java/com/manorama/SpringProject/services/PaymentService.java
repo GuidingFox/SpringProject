@@ -68,14 +68,11 @@ public class PaymentService {
 	public ResponseEntity getCheckout(float amount) {
 		Stripe.apiKey = "sk_test_51OPIddSBY2c1xYHV84jmsahFjlMNE09nOJZxU7y87yM0NdWlo6JZlptYnVZPt7075DgLEgXz0bHNi8cmvIeYrVLX00W2DrcWXU";
 		String YOUR_DOMAIN = "http://localhost:3000";
-		String reqData = getRequestString(123, 1, YOUR_DOMAIN);
+		String reqData = getRequestString(amount, 1, YOUR_DOMAIN);
 
 		HttpResponse<String> response;
 		try {
 			response = sendHttpRequest(reqData);
-			System.out.println("Response Code: " + response.statusCode());
-			System.out.println("Response Body: " + response.body());
-
 			return ResponseEntity.status(302).body(response.body());
 
 		} catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException | IOException
@@ -84,7 +81,6 @@ public class PaymentService {
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(null);
 		}
-		
 
 	}
 }

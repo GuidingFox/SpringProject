@@ -15,7 +15,7 @@
 	<name>SpringProject</name>
 	<description>project for Spring Boot</description>
 	<properties>
-		<java.version>8</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -28,6 +28,7 @@
 		</dependency>
 		
 		<dependency>
+<<<<<<< HEAD
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
@@ -40,6 +41,8 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		<dependency>
+=======
+>>>>>>> normalization
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
@@ -50,6 +53,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
 			<version>0.11.5</version>
@@ -74,6 +78,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+=======
+>>>>>>> normalization
 			<groupId>com.stripe</groupId>
 			<artifactId>stripe-java</artifactId>
 			<version>24.0.0</version>
