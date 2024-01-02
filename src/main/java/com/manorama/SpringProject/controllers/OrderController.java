@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.OrderModel;
 import com.manorama.SpringProject.repositories.OrderRepository;
@@ -63,9 +64,20 @@ public class OrderController {
 	public Object getMonthlySummary(@RequestParam long user_id) {
 		return orderService.getMonthlySummary(user_id);
 	}
-//
-//	@GetMapping("/summary/daily")
-//	public DailySummary getDailySummary(@RequestParam long user_id) {
-//		return orderService.getDailySummary(user_id);
-//	}
+
+	@GetMapping("/today")
+	public ResponseEntity getDailyOrders() {
+		return orderService.getDailyOrders();
+
+	}
+
+	@GetMapping("/summary/daily")
+	public DailySummary getDailySummary(@RequestParam long user_id) {
+		return orderService.getDailySummary(user_id);
+	}
+	
+	@GetMapping("/summary")
+	public ResponseEntity getSummary(@RequestParam long user_id) {
+		return orderService.getSummary(user_id);
+	}
 }

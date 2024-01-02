@@ -1,5 +1,7 @@
 package com.manorama.SpringProject.services;
 
+import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.Summary.MonthlySummary;
+import com.manorama.SpringProject.Summary.Summary;
 import com.manorama.SpringProject.entities.Items;
 import com.manorama.SpringProject.entities.OrderItems;
 import com.manorama.SpringProject.entities.Orders;
@@ -70,10 +74,10 @@ public class OrderService {
 		MonthlySummary data = orderRepository.userSummary(user_id);
 		return data;
 	}
-//
-//	public DailySummary getDailySummary(long user_id) {
-//		return orderRepository.getUserDailySummary(user_id);
-//	}
+
+	public DailySummary getDailySummary(long user_id) {
+		return orderRepository.userDailySummary(user_id);
+	}
 
 	public Optional<Orders> getOrderTest(Long orderId) {
 		Optional<Orders> order = orderRepository.findById(orderId);
@@ -89,5 +93,16 @@ public class OrderService {
 				orderItemRepository.save(new OrderItems(savedOrder, itemFromDb.get(), item.getQuantity()));
 			}
 		});
+	}
+
+	public ResponseEntity getDailyOrders() {
+		return ResponseEntity.ok(orderRepository.findAllByDate(new Date()));
+	}
+	
+	public ResponseEntity getSummary(long user_id) {
+		MonthlySummary ms = orderRepository.userSummary(user_id);
+		DailySummary ds = orderRepository.userDailySummary(user_id);
+		Summary sm = new Summary(ms, ds);
+		return ResponseEntity.ok(sm);
 	}
 }
