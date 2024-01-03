@@ -1,5 +1,7 @@
 package com.manorama.SpringProject.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,15 @@ import java.util.Optional;
 public class ItemsService {
 	private final ItemsRepository itemsRepository;
 
+	Logger logger = LoggerFactory.getLogger(ItemsService.class);
+
 	@Autowired
 	public ItemsService(ItemsRepository itemsRepository) {
 		this.itemsRepository = itemsRepository;
 	}
 
 	public List<Items> getAllItems() {
+		logger.info("getting items");
 		return itemsRepository.findAll();
 	}
 
@@ -33,7 +38,7 @@ public class ItemsService {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			return ResponseEntity.internalServerError().build();
-			
+
 		}
 	}
 
@@ -50,6 +55,7 @@ public class ItemsService {
 	}
 
 	public Items updateItem(Items items) {
+		logger.info("updating items");
 		Optional<Items> fetchedItem = itemsRepository.findById(items.getId());
 		if (fetchedItem.isPresent()) {
 			Items item = fetchedItem.get();

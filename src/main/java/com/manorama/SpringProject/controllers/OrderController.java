@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,24 +18,32 @@ import org.springframework.web.bind.annotation.RestController;
 import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.OrderModel;
-import com.manorama.SpringProject.repositories.OrderRepository;
+import com.manorama.SpringProject.models.UpdateOrder;
 import com.manorama.SpringProject.services.OrderService;
 
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
 	private final OrderService orderService;
-//	private final ItemsService itemsService;
 
 	@Autowired
 	public OrderController(OrderService orderService) {
 		this.orderService = orderService;
-//		this.itemsService = itemsService;
 	}
 
 	@GetMapping
 	public List<Orders> getAllOrders() {
 		return orderService.getAllOrders();
+	}
+
+	@PutMapping("/order/delete-items")
+	public ResponseEntity deleteOrderItems(@RequestParam long order_id, long item_id) {
+		return orderService.deleteOrderItems(order_id, item_id);
+	}
+	
+	@PutMapping("/order/update-items")
+	public ResponseEntity updateOrderItems(@RequestBody UpdateOrder order) {
+		return orderService.updateOrderItems(order.getOrder_id(), order.getItem_id(), order.getQuantity());
 	}
 
 	@GetMapping("/{id}")
@@ -45,7 +54,6 @@ public class OrderController {
 	@DeleteMapping("/{id}")
 	public void deleteOrder(@PathVariable Long id) {
 		orderService.deleteOrder(id);
-//		orderService
 	}
 
 	@PostMapping("/add")
@@ -60,24 +68,15 @@ public class OrderController {
 		return orderService.createCheckout(Long.parseLong(order_id));
 	}
 
-	@GetMapping("/summary/monthly")
-	public Object getMonthlySummary(@RequestParam long user_id) {
-		return orderService.getMonthlySummary(user_id);
-	}
-
 	@GetMapping("/today")
 	public ResponseEntity getDailyOrders() {
 		return orderService.getDailyOrders();
 
 	}
 
-	@GetMapping("/summary/daily")
-	public DailySummary getDailySummary(@RequestParam long user_id) {
-		return orderService.getDailySummary(user_id);
-	}
-	
 	@GetMapping("/summary")
 	public ResponseEntity getSummary(@RequestParam long user_id) {
 		return orderService.getSummary(user_id);
 	}
+
 }
