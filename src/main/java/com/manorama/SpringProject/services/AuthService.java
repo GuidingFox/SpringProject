@@ -1,10 +1,12 @@
 package com.manorama.SpringProject.services;
 
+import com.manorama.SpringProject.models.UserReturn;
+import com.manorama.SpringProject.payload.JWTAuthResponse;
 import com.manorama.SpringProject.payload.LoginDto;
 import com.manorama.SpringProject.payload.RegisterDto;
 
 public interface AuthService {
-    String login(LoginDto loginDto);
+    JWTAuthResponse login(LoginDto loginDto);
 
     String register(RegisterDto registerDto);
 

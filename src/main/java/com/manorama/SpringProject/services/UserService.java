@@ -1,6 +1,7 @@
 package com.manorama.SpringProject.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,4 +33,10 @@ public class UserService {
 	public void addManyUsers(List<User> users) {
 		userRepository.saveAll(users);
 	}
+
+	public Optional<User> findUserIdByUsername(String usernameOrEmail) {
+		
+		return userRepository.findByUsername(usernameOrEmail);
+	}
+	
 }

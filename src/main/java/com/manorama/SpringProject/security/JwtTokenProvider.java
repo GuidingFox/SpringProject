@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.manorama.SpringProject.models.UserReturn;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -21,21 +23,34 @@ public class JwtTokenProvider {
 	@Value("${app-jwt-expiration-milliseconds}")
 	private long jwtExpirationDate;
 
-	// generate JWT token
+//	 generate JWT token
 	public String generateToken(Authentication authentication) {
 
 		String username = authentication.getName();
-
+        
 		Date currentDate = new Date();
 
 		Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
-		System.out.println(username);
+		
 		String token = Jwts.builder().setSubject(username).setIssuedAt(new Date()).setExpiration(expireDate)
 				.signWith(key()).compact();
-		System.out.println(token);
+		
 		return token;
 	}
 
+//	public UserReturn generateToken(Authentication authentication,Long userId) {
+//
+//		String username = authentication.getName();
+//        
+//		Date currentDate = new Date();
+//
+//		Date expireDate = new Date(currentDate.getTime() + jwtExpirationDate);
+//		
+//		String token = Jwts.builder().setSubject(username).setIssuedAt(new Date()).setExpiration(expireDate)
+//				.signWith(key()).compact();
+//		
+//		return new UserReturn(userId, token);
+//	}
 	private Key key() {
 		return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
 	}
@@ -47,6 +62,7 @@ public class JwtTokenProvider {
 		return username;
 	}
 
+	
 	// validate Jwt token
 	public boolean validateToken(String token) {
 
