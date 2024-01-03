@@ -1,9 +1,18 @@
 package com.manorama.SpringProject.models;
 
+public class UpdateOrder {
 
-public class ItemModel {
-	private long item_id;
+	private Long order_id;
+	private Long item_id;
 	private int quantity;
+
+	public long getOrder_id() {
+		return order_id;
+	}
+
+	public void setOrder_id(long order_id) {
+		this.order_id = order_id;
+	}
 
 	public long getItem_id() {
 		return item_id;
@@ -21,10 +30,4 @@ public class ItemModel {
 		this.quantity = quantity;
 	}
 
-	public ItemModel(long item_id, int quantity) {
-		this.item_id = item_id;
-		this.quantity = quantity;
-	}
-	
-	
 }

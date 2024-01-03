@@ -50,11 +50,13 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeHttpRequests((authorize) -> authorize.antMatchers("/api/items/").hasRole("ROLE_ADMIN").antMatchers("/api/auth/**").permitAll()
+		http.csrf().disable()
+				.authorizeHttpRequests((authorize) -> authorize.antMatchers(HttpMethod.POST, "/api/items/")
+						.hasRole("ROLE_ADMIN").antMatchers("/api/auth/**").permitAll()
 
-				.anyRequest().authenticated()
+						.anyRequest().authenticated()
 
-		).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
+				).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
 		http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);

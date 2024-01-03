@@ -60,9 +60,8 @@ public class AuthServiceImpl implements AuthService {
 		} else {
 			return null;
 		}
+  }
 
-
-	}
 
 	@Override
 	public String register(RegisterDto registerDto) {

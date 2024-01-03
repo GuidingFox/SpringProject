@@ -12,10 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-import lombok.Data;
 
 @Entity
-@Data
 public class User {
 
 	@Id
