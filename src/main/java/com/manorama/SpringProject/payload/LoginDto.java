@@ -2,7 +2,7 @@ package com.manorama.SpringProject.payload;
 
 public class LoginDto {
 	public LoginDto(String usernameOrEmail, String password) {
-
+       
 		this.usernameOrEmail = usernameOrEmail;
 		this.password = password;
 	}
