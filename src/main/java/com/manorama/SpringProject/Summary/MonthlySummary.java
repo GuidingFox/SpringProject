@@ -2,6 +2,10 @@ package com.manorama.SpringProject.Summary;
 
 public class MonthlySummary {
 
+	private int month;
+	private double totalAmount;
+	private int year;
+	
 	public int getDay() {
 		return month;
 	}
@@ -17,10 +21,6 @@ public class MonthlySummary {
 	public void setTotalAmount(float totalAmount) {
 		this.totalAmount = totalAmount;
 	}
-
-	private int month;
-	private double totalAmount;
-	private int year;
 
 	public MonthlySummary(int month, float totalAmount, int year) {
 		this.month = month;

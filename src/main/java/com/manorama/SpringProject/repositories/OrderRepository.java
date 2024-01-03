@@ -26,10 +26,10 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(DAY(o.date) as day, MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE DAY(o.date) = DAY(CURDATE()) AND MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) AND o.user_id=:user_id GROUP BY MONTH(o.date), YEAR(o.date), DAY(o.date), o.user_id")
 	DailySummary userDailySummary(@Param("user_id") long user_id);
 	
-	@Query("SELECT new com.manorama.SpringProject.Summary.MonthlySummary(MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) GROUP BY MONTH(o.date), YEAR(o.date), o.user_id")
+	@Query("SELECT new com.manorama.SpringProject.Summary.MonthlySummary(MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) GROUP BY MONTH(o.date), YEAR(o.date)")
 	MonthlySummary adminSummary();
 	
-	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(DAY(o.date) as day, MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE DAY(o.date) = DAY(CURDATE()) AND MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) GROUP BY MONTH(o.date), YEAR(o.date), DAY(o.date), o.user_id")
+	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(DAY(o.date) as day, MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE DAY(o.date) = DAY(CURDATE()) AND MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) GROUP BY MONTH(o.date), YEAR(o.date), DAY(o.date)")
 	DailySummary adminDailySummary();
 	
 	@Query("from Orders s where DATE(s.date) = :date")
