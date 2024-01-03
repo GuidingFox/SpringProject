@@ -1,6 +1,7 @@
 package com.manorama.SpringProject.services.impl;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -90,5 +91,22 @@ public class AuthServiceImpl implements AuthService {
 		userRepository.save(user);
 
 		return "User registered successfully!.";
+	}
+	
+	@Override
+	public String resetPassword(int personalNo,String newPassword) {
+		User user=userRepository.findByPersonalNo(personalNo);
+		String result;
+		if(user!=null) {
+			user.setPassword(passwordEncoder.encode(newPassword));
+			userRepository.save(user);
+			result= "Password has been reset!";
+		}
+		else {
+			result="No such user!";
+		}
+		return result;
+		
+		
 	}
 }
