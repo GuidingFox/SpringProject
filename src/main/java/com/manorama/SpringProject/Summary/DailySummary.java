@@ -2,19 +2,11 @@ package com.manorama.SpringProject.Summary;
 
 public class DailySummary {
 	
-	private long user_id;
 	private int day;
 	private int month;
 	private int year;
 	private double totalAmount;
 
-	public long getUser_id() {
-		return user_id;
-	}
-
-	public void setUser_id(long user_id) {
-		this.user_id = user_id;
-	}
 
 	public int getDay() {
 		return day;
@@ -50,14 +42,12 @@ public class DailySummary {
 	}
 
 
-	public DailySummary(long user_id, int day, float totalAmount) {
-		this.user_id = user_id;
+	public DailySummary(int day, float totalAmount) {
 		this.day = day;
 		this.totalAmount = totalAmount;
 	}
 
-	public DailySummary(int day, int month, int year, double totalAmount, long user_id) {
-		this.user_id = user_id;
+	public DailySummary(int day, int month, int year, double totalAmount) {
 		this.day = day;
 		this.month = month;
 		this.year = year;

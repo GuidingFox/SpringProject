@@ -33,9 +33,8 @@ public class OrderService {
 	private final ItemsRepository itemsRepository;
 	private final OrderItemRepository orderItemRepository;
 	private final PaymentService paymentService;
-	
-	Logger logger = LoggerFactory.getLogger(OrderService.class);
 
+	Logger logger = LoggerFactory.getLogger(OrderService.class);
 
 	@Autowired
 	public OrderService(OrderRepository orderRepository, ItemsRepository itemsRepository,
@@ -75,9 +74,6 @@ public class OrderService {
 		return paymentService.getCheckout(totalAmt);
 
 	}
-//	public MonthlySummary getMonthlySummary(long user_id) {
-//		return orderRepository.getUserMonthlySummary(user_id);
-//	}
 
 	public MonthlySummary getMonthlySummary(long user_id) {
 		MonthlySummary data = orderRepository.userSummary(user_id);
@@ -92,17 +88,6 @@ public class OrderService {
 		Optional<Orders> order = orderRepository.findById(orderId);
 		return order;
 	}
-
-//	public void createAnOrder(OrderModel order) {
-//		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
-//		List<ItemModel> items = order.getItems();
-//		items.forEach(item -> {
-//			Optional<Items> itemFromDb = itemsRepository.findById(item.getItem_id());
-//			if (itemFromDb.isPresent()) {
-//				orderItemRepository.save(new OrderItems(savedOrder, itemFromDb.get(), item.getQuantity()));
-//			}
-//		});
-//	}
 
 	@Transactional
 	public void createAnOrder(OrderModel order) {
@@ -130,44 +115,52 @@ public class OrderService {
 		Summary sm = new Summary(ms, ds);
 		return ResponseEntity.ok(sm);
 	}
+	
+	
+	public ResponseEntity getAdminSummary() {
+		MonthlySummary ms = orderRepository.adminSummary();
+		DailySummary ds = orderRepository.adminDailySummary();
+		Summary sm = new Summary(ms, ds);
+		return ResponseEntity.ok(sm);
+	}
 
 	public ResponseEntity<Object> deleteOrderItems(Long order_id, Long item_id) {
 		try {
-		List<OrderItems> ot = orderItemRepository.findAllByOrders(orderRepository.findById(order_id).get());
-		for (OrderItems ordItem: ot) {
-			if (ordItem.getItems().getId() == item_id) {
-				orderItemRepository.deleteById(ordItem.getId());
-				return ResponseEntity.ok().build();
+			List<OrderItems> ot = orderItemRepository.findAllByOrders(orderRepository.findById(order_id).get());
+			for (OrderItems ordItem : ot) {
+				if (ordItem.getItems().getId() == item_id) {
+					orderItemRepository.deleteById(ordItem.getId());
+					return ResponseEntity.ok().build();
+				}
 			}
-		}
 		} catch (NoSuchElementException ne) {
 			logger.error("failed to remove item: {}", ne.getMessage());
 			return ResponseEntity.status(422).body("no such item exists");
 		} catch (Exception e) {
-			logger.error("some error occurred: {}" , e.getMessage());
+			logger.error("some error occurred: {}", e.getMessage());
 			return ResponseEntity.status(500).body("some error occurred: " + e.getMessage());
 		}
 		return ResponseEntity.ok().build();
 	}
 
 	public ResponseEntity updateOrderItems(long order_id, long item_id, int quantity) {
-		
+
 		try {
 			List<OrderItems> ot = orderItemRepository.findAllByOrders(orderRepository.findById(order_id).get());
-			for (OrderItems ordItem: ot) {
+			for (OrderItems ordItem : ot) {
 				if (ordItem.getItems().getId() == item_id) {
 					ordItem.setQuantity(quantity);
 					orderItemRepository.save(ordItem);
 					return ResponseEntity.ok().build();
 				}
 			}
-			} catch (NoSuchElementException ne) {
-				logger.error("failed to remove item: {}", ne.getMessage());
-				return ResponseEntity.status(422).body("no such item exists");
-			} catch (Exception e) {
-				logger.error("some error occurred: {}" , e.getMessage());
-				return ResponseEntity.status(500).body("some error occurred: " + e.getMessage());
-			}
-			return ResponseEntity.ok().build();
+		} catch (NoSuchElementException ne) {
+			logger.error("failed to remove item: {}", ne.getMessage());
+			return ResponseEntity.status(422).body("no such item exists");
+		} catch (Exception e) {
+			logger.error("some error occurred: {}", e.getMessage());
+			return ResponseEntity.status(500).body("some error occurred: " + e.getMessage());
+		}
+		return ResponseEntity.ok().build();
 	}
 }

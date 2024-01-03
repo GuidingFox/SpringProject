@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.manorama.SpringProject.Summary.DailySummary;
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.OrderModel;
 import com.manorama.SpringProject.models.UpdateOrder;
@@ -63,7 +62,6 @@ public class OrderController {
 
 	@PostMapping("/checkout")
 	public ResponseEntity createCheckout(@RequestParam String order_id) {
-
 		System.out.println(order_id);
 		return orderService.createCheckout(Long.parseLong(order_id));
 	}
@@ -71,12 +69,16 @@ public class OrderController {
 	@GetMapping("/today")
 	public ResponseEntity getDailyOrders() {
 		return orderService.getDailyOrders();
-
 	}
 
 	@GetMapping("/summary")
 	public ResponseEntity getSummary(@RequestParam long user_id) {
 		return orderService.getSummary(user_id);
+	}
+	
+	@GetMapping("/admin/summary")
+	public ResponseEntity getSummary() {
+		return orderService.getAdminSummary();
 	}
 
 }
