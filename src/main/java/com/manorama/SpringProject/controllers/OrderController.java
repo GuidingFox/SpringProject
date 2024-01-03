@@ -35,6 +35,11 @@ public class OrderController {
 		return orderService.getAllOrders();
 	}
 
+	@GetMapping("/{order_id}")
+	public ResponseEntity<Orders> getOrderById(@PathVariable Long order_id) {
+		return orderService.getOrderById(order_id);
+	}
+	
 	@PutMapping("/order/delete-items")
 	public ResponseEntity deleteOrderItems(@RequestParam long order_id, long item_id) {
 		return orderService.deleteOrderItems(order_id, item_id);
@@ -45,7 +50,7 @@ public class OrderController {
 		return orderService.updateOrderItems(order.getOrder_id(), order.getItem_id(), order.getQuantity());
 	}
 
-	@GetMapping("/{id}")
+	@GetMapping("/user/{id}")
 	public Optional<Orders> getOrdersByUser(@PathVariable Long id) {
 		return orderService.getOrderTest(id);
 	}
@@ -56,8 +61,8 @@ public class OrderController {
 	}
 
 	@PostMapping("/add")
-	public void createOrder(@RequestBody OrderModel order) {
-		orderService.createAnOrder(order);
+	public ResponseEntity<Orders> createOrder(@RequestBody OrderModel order) {
+		return orderService.createAnOrder(order);
 	}
 
 	@PostMapping("/checkout")

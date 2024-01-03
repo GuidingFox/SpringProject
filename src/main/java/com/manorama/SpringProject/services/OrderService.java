@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -90,7 +89,7 @@ public class OrderService {
 	}
 
 	@Transactional
-	public void createAnOrder(OrderModel order) {
+	public ResponseEntity<Orders> createAnOrder(OrderModel order) {
 		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
 
 		List<OrderItems> orderItemsToSave = new ArrayList<>();
@@ -103,6 +102,7 @@ public class OrderService {
 		}
 
 		orderItemRepository.saveAll(orderItemsToSave);
+		return ResponseEntity.ok(savedOrder);
 	}
 
 	public ResponseEntity getDailyOrders() {
@@ -115,8 +115,7 @@ public class OrderService {
 		Summary sm = new Summary(ms, ds);
 		return ResponseEntity.ok(sm);
 	}
-	
-	
+
 	public ResponseEntity getAdminSummary() {
 		MonthlySummary ms = orderRepository.adminSummary();
 		DailySummary ds = orderRepository.adminDailySummary();
@@ -162,5 +161,14 @@ public class OrderService {
 			return ResponseEntity.status(500).body("some error occurred: " + e.getMessage());
 		}
 		return ResponseEntity.ok().build();
+	}
+
+	public ResponseEntity<Orders> getOrderById(Long order_id) {
+		Optional<Orders> order = orderRepository.findById(order_id);
+		if (order.isPresent()) {
+			return ResponseEntity.ok(order.get());
+		} else {
+			return ResponseEntity.noContent().build();
+		}
 	}
 }
