@@ -50,7 +50,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-		http.csrf().disable().authorizeHttpRequests((authorize) -> authorize.antMatchers("/api/auth/**").permitAll()
+		http.csrf().disable().authorizeHttpRequests((authorize) -> authorize.antMatchers("/api/items/").hasRole("ROLE_ADMIN").antMatchers("/api/auth/**").permitAll()
 
 				.anyRequest().authenticated()
 
