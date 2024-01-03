@@ -20,10 +20,10 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 //	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(e.user_id, DAY(e.date),  CAST(SUM(e.amount) AS float)) FROM Orders e WHERE e.user_id = ?1 AND DAY(CURDATE()) = DAY(e.date) GROUP BY e.user_id, DAY(e.date)")
 //	DailySummary getUserDailySummary(long id);
 
-	@Query("SELECT new com.manorama.SpringProject.Summary.MonthlySummary(MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount, o.user_id) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) AND o.user_id=:user_id GROUP BY MONTH(o.date), YEAR(o.date)")
+	@Query("SELECT new com.manorama.SpringProject.Summary.MonthlySummary(MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount, o.user_id) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) AND o.user_id=:user_id GROUP BY MONTH(o.date), YEAR(o.date), o.user_id")
 	MonthlySummary userSummary(@Param("user_id") long user_id);
 	
-	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(DAY(o.date) as day, MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount, o.user_id) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE DAY(o.date) = DAY(CURDATE()) AND MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) AND o.user_id=:user_id GROUP BY MONTH(o.date), YEAR(o.date)")
+	@Query("SELECT new com.manorama.SpringProject.Summary.DailySummary(DAY(o.date) as day, MONTH(o.date) AS month, YEAR(o.date) AS year, SUM(oi.quantity * i.price) AS total_amount, o.user_id) FROM Orders o JOIN OrderItems oi ON o.id = oi.orders.id JOIN Items i ON oi.items.id = i.id WHERE DAY(o.date) = DAY(CURDATE()) AND MONTH(o.date) = MONTH(CURDATE()) AND YEAR(o.date) = YEAR(CURDATE()) AND o.user_id=:user_id GROUP BY MONTH(o.date), YEAR(o.date), DAY(o.date), o.user_id")
 	DailySummary userDailySummary(@Param("user_id") long user_id);
 	
 //	Orders findAllByDate(LocalDate date);
