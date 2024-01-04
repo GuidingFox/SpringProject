@@ -1,6 +1,7 @@
 package com.manorama.SpringProject.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,27 @@ public class CartService {
 		OrderModel orders = new OrderModel(cartItems.get(0).getCategory(), user_id, items);
 		Orders order = orderService.createOrderFromCart(orders);
 		return ResponseEntity.ok(order);
+	}
+
+	public ResponseEntity addItemToCart(Cart cart) {
+
+		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(cart.getUserId(), cart.getItem_id());
+		if (cartItems.isEmpty()) {
+			Cart savedCart = cartRepository.save(cart);
+			return ResponseEntity.ok(savedCart);
+		} else {
+			return ResponseEntity.status(208).body("CART_ITEM_ALREADY_EXITS");
+		}
+//		return ResponseEntity.internalServerError().build();
+	}
+
+	public ResponseEntity deleteFromCart(long user_id, long item_id) {
+		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
+		if (cartItems.isEmpty()) {
+			return ResponseEntity.status(204).body("CART_ITEM_ALREADY_EXITS");
+		} else {
+			cartRepository.delete(cartItems.get());
+			return ResponseEntity.ok("deletion successful");
+		}
 	}
 }

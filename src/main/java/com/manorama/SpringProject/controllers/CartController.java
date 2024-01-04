@@ -2,6 +2,7 @@ package com.manorama.SpringProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,18 +24,27 @@ public class CartController {
 		this.cartService = cartService;
 	}
 
-	@PostMapping
-	public ResponseEntity addToCart(@RequestBody Cart cart) {
-		return cartService.addToOrder(cart);
-	}
+//	@PostMapping
+//	public ResponseEntity addToCart(@RequestBody Cart cart) {
+//		return cartService.addToOrder(cart);
+//	}
 
 	@GetMapping
 	public ResponseEntity getCartItems(@RequestParam long user_id) {
 		return cartService.getCartItemsById(user_id);
 	}
-	
+
 	public ResponseEntity cartCheckout(@RequestParam long user_id) {
 		return null;
+	}
 
+	@PostMapping
+	public ResponseEntity addItemToCart(@RequestBody Cart cart) {
+		return cartService.addItemToCart(cart);
+	}
+	
+	@DeleteMapping
+	public ResponseEntity removeFromCart(@RequestParam long user_id, @RequestParam long item_id) {
+		return cartService.deleteFromCart(user_id, item_id);
 	}
 }
