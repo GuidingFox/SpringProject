@@ -20,8 +20,8 @@ public class PaymentsController {
 	}
 
 
-	@PostMapping("/checkout")
-	public ResponseEntity<Object> createCheckoutSession() {
-		return this.paymentService.getCheckout(100);
-	}
+//	@PostMapping("/checkout")
+//	public ResponseEntity<Object> createCheckoutSession() {
+//		return this.paymentService.getCheckout(100);
+//	}
 }

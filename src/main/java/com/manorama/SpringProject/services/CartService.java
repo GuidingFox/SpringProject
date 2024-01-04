@@ -2,6 +2,7 @@ package com.manorama.SpringProject.services;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +36,13 @@ public class CartService {
 
 	public ResponseEntity createCheckout(long user_id) {
 		List<Cart> cartItems = cartRepository.findAllByuserId(user_id);
-		List<ItemModel> items = null;
-		cartItems.forEach(cItem -> {
-			items.add(new ItemModel(cItem.getItem_id(), cItem.getQuantity()));
-		});
+		List<ItemModel> items = cartItems.stream().map(cItem->{
+			return new ItemModel(cItem.getItem_id(), cItem.getQuantity());
+		}).collect(Collectors.toList());
 
 		OrderModel orders = new OrderModel(cartItems.get(0).getCategory(), user_id, items);
-		Orders order = orderService.createOrderFromCart(orders);
-		return ResponseEntity.ok(order);
+		return orderService.createOrderFromCart(orders);
+//		return ResponseEntity.ok(order);
 	}
 
 	public ResponseEntity addItemToCart(Cart cart) {
@@ -66,7 +66,7 @@ public class CartService {
 			return ResponseEntity.ok("deletion successful");
 		}
 	}
-	
+
 	public ResponseEntity updateCart(long user_id, long item_id, int quantity) {
 		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
 		if (cartItems.isEmpty()) {
@@ -77,6 +77,5 @@ public class CartService {
 			return ResponseEntity.ok("updation successful");
 		}
 	}
-	
-	
+
 }

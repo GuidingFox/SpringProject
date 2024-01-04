@@ -70,7 +70,7 @@ public class OrderService {
 		for (OrderItems ordItem : ordItems) {
 			totalAmt += ordItem.getItems().getPrice() * ordItem.getQuantity();
 		}
-		return paymentService.getCheckout(totalAmt);
+		return paymentService.getCheckout(totalAmt, ordItems.get(0).getOrders().getId());
 
 	}
 
@@ -103,7 +103,7 @@ public class OrderService {
 		return ResponseEntity.ok(savedOrder);
 	}
 
-	public Orders createOrderFromCart(OrderModel order) {
+	public ResponseEntity createOrderFromCart(OrderModel order) {
 		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
 
 		List<OrderItems> orderItemsToSave = new ArrayList<>();
@@ -115,7 +115,9 @@ public class OrderService {
 			});
 		}
 		orderItemRepository.saveAll(orderItemsToSave);
-		return savedOrder;
+		return createCheckout(savedOrder.getId());
+//		return savedOrder;
+		
 	}
 
 	public ResponseEntity getDailyOrders() {

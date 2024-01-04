@@ -53,23 +53,23 @@ public class PaymentService {
 
 	}
 
-	private String getRequestString(float amount, int quantity, String url) {
+	private String getRequestString(float amount, int quantity, String url, long order_id) {
 		StringBuilder req = new StringBuilder();
 		req.append("mode=payment&");
-		req.append("success_url=" + url + "?success=True&");
+		req.append("success_url=" + url + "?order_id=" + order_id + "&");
 		req.append("cancel_url=" + url + "?canceled=True&");
 		req.append("line_items[0][price_data][unit_amount]=" + (int) amount * 100 + "&");
 		req.append("line_items[0][price_data][product_data][name]=canteenpayment&");
 		req.append("line_items[0][price_data][currency]=inr&");
 		req.append("line_items[0][quantity]=" + quantity + "&");
+		req.append("billing_address_collection=required");
 		return req.toString();
 	}
 
-	public ResponseEntity getCheckout(float amount) {
+	public ResponseEntity getCheckout(float amount, long order_id) {
 		Stripe.apiKey = "sk_test_51OPIddSBY2c1xYHV84jmsahFjlMNE09nOJZxU7y87yM0NdWlo6JZlptYnVZPt7075DgLEgXz0bHNi8cmvIeYrVLX00W2DrcWXU";
 		String YOUR_DOMAIN = "http://localhost:3000";
-		String reqData = getRequestString(amount, 1, YOUR_DOMAIN);
-
+		String reqData = getRequestString(amount, 1, YOUR_DOMAIN, order_id);
 		HttpResponse<String> response;
 		try {
 			response = sendHttpRequest(reqData);
