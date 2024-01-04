@@ -73,7 +73,7 @@ public class PaymentService {
 		HttpResponse<String> response;
 		try {
 			response = sendHttpRequest(reqData);
-			return ResponseEntity.status(302).body(response.body());
+			return ResponseEntity.ok(response.body());
 
 		} catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException | IOException
 				| InterruptedException e) {

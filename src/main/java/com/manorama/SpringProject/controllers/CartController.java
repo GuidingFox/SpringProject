@@ -37,7 +37,7 @@ public class CartController {
 		return cartService.getCartItemsById(user_id);
 	}
 
-	@PostMapping("/checkout")
+	@GetMapping("/checkout")
 	public ResponseEntity cartCheckout(@RequestParam long user_id) {
 		return cartService.createCheckout(user_id);
 	}
