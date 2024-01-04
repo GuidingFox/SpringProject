@@ -85,5 +85,10 @@ public class OrderController {
 	public ResponseEntity getSummary() {
 		return orderService.getAdminSummary();
 	}
+	
+	@PostMapping("/paid")
+	public ResponseEntity updateAfterPayment(@RequestParam long order_id) {
+		return orderService.updateOnPayment(order_id);
+	}
 
 }

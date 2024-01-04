@@ -77,7 +77,6 @@ public class PaymentService {
 
 		} catch (KeyManagementException | NoSuchAlgorithmException | URISyntaxException | IOException
 				| InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return ResponseEntity.internalServerError().body(null);
 		}

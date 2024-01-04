@@ -117,7 +117,7 @@ public class OrderService {
 		orderItemRepository.saveAll(orderItemsToSave);
 		return createCheckout(savedOrder.getId());
 //		return savedOrder;
-		
+
 	}
 
 	public ResponseEntity getDailyOrders() {
@@ -185,5 +185,16 @@ public class OrderService {
 		} else {
 			return ResponseEntity.noContent().build();
 		}
+	}
+
+	public ResponseEntity updateOnPayment(long order_id) {
+		Optional<Orders> order = orderRepository.findById(order_id);
+		if (order.isPresent()) {
+			order.get().setPaymentStatus("success");
+			order.get().setStatus("fulfilled");
+		}
+//		orderRepository.save(order.get());
+		return ResponseEntity.ok(orderRepository.save(order.get()));
+//		return null;
 	}
 }
