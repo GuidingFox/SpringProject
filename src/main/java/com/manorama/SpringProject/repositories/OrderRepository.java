@@ -29,5 +29,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 
 	@Query("from Orders s where DATE(s.date) = :date")
 	public List<Orders> findAllByDate(@Param("date") Date date);
-
+	
+	@Query("from Orders s where DATE(s.date) >= :start_date and DATE(s.date) <= :end_date and s.user_id =:user_id")
+	public List<Orders> findAllBetweenDates(@Param("start_date") Date start_date, @Param("end_date") Date last_date, @Param("user_id") long user_id);
 }

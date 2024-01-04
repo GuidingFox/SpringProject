@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.OrderModel;
+import com.manorama.SpringProject.models.TransactionModel;
 import com.manorama.SpringProject.models.UpdateOrder;
 import com.manorama.SpringProject.services.OrderService;
 
@@ -91,4 +92,9 @@ public class OrderController {
 		return orderService.updateOnPayment(order_id);
 	}
 
+	
+	@PostMapping("/transactions")
+	public ResponseEntity getTransactions(@RequestBody TransactionModel txnModel) {
+		return orderService.getTransactions(txnModel);
+	}
 }

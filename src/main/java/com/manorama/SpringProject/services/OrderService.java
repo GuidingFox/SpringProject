@@ -22,6 +22,7 @@ import com.manorama.SpringProject.entities.OrderItems;
 import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.ItemModel;
 import com.manorama.SpringProject.models.OrderModel;
+import com.manorama.SpringProject.models.TransactionModel;
 import com.manorama.SpringProject.repositories.ItemsRepository;
 import com.manorama.SpringProject.repositories.OrderItemRepository;
 import com.manorama.SpringProject.repositories.OrderRepository;
@@ -197,5 +198,11 @@ public class OrderService {
 //		orderRepository.save(order.get());
 		return ResponseEntity.ok(orderRepository.save(order.get()));
 //		return null;
+	}
+
+	public ResponseEntity getTransactions(TransactionModel txnModel) {
+
+		List<Orders> orders = orderRepository.findAllBetweenDates(txnModel.getStart_date(), txnModel.getEnd_date(), txnModel.getUser_id());
+		return ResponseEntity.ok(orders);
 	}
 }
