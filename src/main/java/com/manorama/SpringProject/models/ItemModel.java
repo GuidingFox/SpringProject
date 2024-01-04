@@ -1,6 +1,5 @@
 package com.manorama.SpringProject.models;
 
-
 public class ItemModel {
 	private long item_id;
 	private int quantity;
@@ -25,6 +24,5 @@ public class ItemModel {
 		this.item_id = item_id;
 		this.quantity = quantity;
 	}
-	
-	
+
 }
