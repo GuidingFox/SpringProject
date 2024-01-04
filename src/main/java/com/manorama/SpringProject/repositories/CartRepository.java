@@ -12,6 +12,8 @@ import com.manorama.SpringProject.entities.Cart;
 public interface CartRepository extends JpaRepository<Cart, Long> {
 
 	List<Cart> findAllByuserId(long id);
+	
+	void deleteAllByuserId(long id);
 
 	@Query("from Cart c where c.userId = :user_id and c.item_id = :item_id")
 	Optional<Cart> findByUserIdandItemId(@Param("user_id") long user_id, @Param("item_id") long item_id);

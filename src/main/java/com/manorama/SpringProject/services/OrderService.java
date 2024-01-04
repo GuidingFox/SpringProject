@@ -103,6 +103,7 @@ public class OrderService {
 		return ResponseEntity.ok(savedOrder);
 	}
 
+	@Transactional
 	public ResponseEntity createOrderFromCart(OrderModel order) {
 		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
 

@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -34,13 +36,15 @@ public class CartService {
 		return ResponseEntity.ok(cartRepository.findAllByuserId(id));
 	}
 
+	@Transactional
 	public ResponseEntity createCheckout(long user_id) {
 		List<Cart> cartItems = cartRepository.findAllByuserId(user_id);
-		List<ItemModel> items = cartItems.stream().map(cItem->{
+		List<ItemModel> items = cartItems.stream().map(cItem -> {
 			return new ItemModel(cItem.getItem_id(), cItem.getQuantity());
 		}).collect(Collectors.toList());
 
 		OrderModel orders = new OrderModel(cartItems.get(0).getCategory(), user_id, items);
+		cartRepository.deleteAllByuserId(user_id);
 		return orderService.createOrderFromCart(orders);
 //		return ResponseEntity.ok(order);
 	}
@@ -67,15 +71,35 @@ public class CartService {
 		}
 	}
 
-	public ResponseEntity updateCart(long user_id, long item_id, int quantity) {
-		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
-		if (cartItems.isEmpty()) {
+//	public ResponseEntity updateCart(long user_id, long item_id, int quantity) {
+//		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
+//		if (cartItems.isEmpty()) {
+//			return ResponseEntity.status(204).body("CART_ITEM_DOESNT_EXIST");
+//		} else {
+//			cartItems.get().setQuantity(quantity);
+//			cartRepository.save(cartItems.get());
+//			return ResponseEntity.ok("updation successful");
+//		}
+//	}
+
+	public ResponseEntity updateCart(List<Cart> carts) {
+		boolean flag = false;
+
+		for (Cart cart : carts) {
+			Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(cart.getUserId(), cart.getItem_id());
+			if (cartItems.isEmpty()) {
+				flag = true;
+			} else {
+				cartItems.get().setQuantity(cart.getQuantity());
+				cartRepository.save(cartItems.get());
+			}
+		}
+		if (flag) {
 			return ResponseEntity.status(204).body("CART_ITEM_DOESNT_EXIST");
 		} else {
-			cartItems.get().setQuantity(quantity);
-			cartRepository.save(cartItems.get());
 			return ResponseEntity.ok("updation successful");
 		}
+
 	}
 
 }

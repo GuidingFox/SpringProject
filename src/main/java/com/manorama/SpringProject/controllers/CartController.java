@@ -1,5 +1,7 @@
 package com.manorama.SpringProject.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,14 +46,14 @@ public class CartController {
 	public ResponseEntity addItemToCart(@RequestBody Cart cart) {
 		return cartService.addItemToCart(cart);
 	}
-	
+
 	@DeleteMapping
 	public ResponseEntity removeFromCart(@RequestParam long user_id, @RequestParam long item_id) {
 		return cartService.deleteFromCart(user_id, item_id);
 	}
-	
+
 	@PutMapping
-	public ResponseEntity updateCart(@RequestParam long user_id, @RequestParam long item_id, @RequestParam int quantity) {
-		return cartService.updateCart(user_id, item_id, quantity);
+	public ResponseEntity updateCart(@RequestBody List<Cart> cart) {
+		return cartService.updateCart(cart);
 	}
 }
