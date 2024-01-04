@@ -60,10 +60,23 @@ public class CartService {
 	public ResponseEntity deleteFromCart(long user_id, long item_id) {
 		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
 		if (cartItems.isEmpty()) {
-			return ResponseEntity.status(204).body("CART_ITEM_ALREADY_EXITS");
+			return ResponseEntity.status(204).body("CART_ITEM_DOESNT_EXIST");
 		} else {
 			cartRepository.delete(cartItems.get());
 			return ResponseEntity.ok("deletion successful");
 		}
 	}
+	
+	public ResponseEntity updateCart(long user_id, long item_id, int quantity) {
+		Optional<Cart> cartItems = cartRepository.findByUserIdandItemId(user_id, item_id);
+		if (cartItems.isEmpty()) {
+			return ResponseEntity.status(204).body("CART_ITEM_DOESNT_EXIST");
+		} else {
+			cartItems.get().setQuantity(quantity);
+			cartRepository.save(cartItems.get());
+			return ResponseEntity.ok("updation successful");
+		}
+	}
+	
+	
 }
