@@ -100,9 +100,22 @@ public class OrderService {
 				orderItemsToSave.add(orderItem);
 			});
 		}
-
-		orderItemRepository.saveAll(orderItemsToSave);
 		return ResponseEntity.ok(savedOrder);
+	}
+
+	public Orders createOrderFromCart(OrderModel order) {
+		Orders savedOrder = orderRepository.save(new Orders(order.getUser_id(), order.getCategory()));
+
+		List<OrderItems> orderItemsToSave = new ArrayList<>();
+		for (ItemModel item : order.getItems()) {
+			Optional<Items> itemFromDb = itemsRepository.findById(item.getItem_id());
+			itemFromDb.ifPresent(itemEntity -> {
+				OrderItems orderItem = new OrderItems(savedOrder, itemEntity, item.getQuantity());
+				orderItemsToSave.add(orderItem);
+			});
+		}
+		orderItemRepository.saveAll(orderItemsToSave);
+		return savedOrder;
 	}
 
 	public ResponseEntity getDailyOrders() {

@@ -67,11 +67,13 @@ public class Cart {
 		this.item_id = item_id;
 	}
 
-	public Cart(long userId, int quantity, float price, long item_id) {
+	public Cart(long userId, int quantity, float price, long item_id, String name, String category) {
 		this.userId = userId;
 		this.quantity = quantity;
 		this.price = price;
 		this.item_id = item_id;
+		this.name = name;
+		this.category = category;
 	}
 
 	public long getUserId() {
