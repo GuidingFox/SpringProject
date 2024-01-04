@@ -24,6 +24,15 @@ public class Cart {
 	private int quantity;
 	private float price;
 	private long item_id;
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public int getQuantity() {
 		return quantity;

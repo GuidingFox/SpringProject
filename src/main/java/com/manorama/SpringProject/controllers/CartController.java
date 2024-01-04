@@ -32,4 +32,9 @@ public class CartController {
 	public ResponseEntity getCartItems(@RequestParam long user_id) {
 		return cartService.getCartItemsById(user_id);
 	}
+	
+	public ResponseEntity cartCheckout(@RequestParam long user_id) {
+		return null;
+		
+	}
 }
