@@ -5,6 +5,7 @@ import java.util.Date;
 
 public class TxnReturnModel {
 
+	private long id;
 	private LocalDate date;
 	private String category;
 	private String item;
@@ -51,7 +52,16 @@ public class TxnReturnModel {
 		this.amount = amount;
 	}
 
-	public TxnReturnModel(LocalDate date, String category, String item, int quantity, float amount) {
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public TxnReturnModel(long id, LocalDate date, String category, String item, int quantity, float amount) {
+		this.id = id;
 		this.date = date;
 		this.category = category;
 		this.item = item;

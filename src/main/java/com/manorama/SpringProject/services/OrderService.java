@@ -213,7 +213,7 @@ public class OrderService {
 		List<TxnReturnModel> txns = new ArrayList<TxnReturnModel>();
 		for (Orders order : orders) {
 			List<TxnReturnModel> txn = order.getItems().stream().map(item -> {
-				return new TxnReturnModel(order.getDate(), order.getCategory(), item.getItems().getName(),
+				return new TxnReturnModel(order.getId(), order.getDate(), order.getCategory(), item.getItems().getName(),
 						item.getQuantity(), item.getQuantity() * item.getItems().getPrice());
 			}).collect(Collectors.toList());
 			txns.addAll(txn);
