@@ -6,6 +6,7 @@ public class DailySummary {
 	private int month;
 	private int year;
 	private double totalAmount;
+	private long totalOrders;
 
 
 	public int getDay() {
@@ -47,11 +48,20 @@ public class DailySummary {
 		this.totalAmount = totalAmount;
 	}
 
-	public DailySummary(int day, int month, int year, double totalAmount) {
+	public DailySummary(int day, int month, int year, double totalAmount, long totalOrders) {
 		this.day = day;
 		this.month = month;
 		this.year = year;
 		this.totalAmount = totalAmount;
+		this.totalOrders = totalOrders;
+	}
+
+	public long getTotalOrders() {
+		return totalOrders;
+	}
+
+	public void setTotalOrders(int totalOrders) {
+		this.totalOrders = totalOrders;
 	}
 	
 	
