@@ -19,30 +19,39 @@ import com.manorama.SpringProject.services.AuthService;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private AuthService authService;
+	private AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+	public AuthController(AuthService authService) {
+		this.authService = authService;
+	}
 
-   
-    @PostMapping(value = {"/login", "/signin"})
-    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
-    	JWTAuthResponse jwtAuthResponse = authService.login(loginDto);
-        return ResponseEntity.ok(jwtAuthResponse);
-    }
+//    @PostMapping(value = {"/login", "/signin"})
+//    public ResponseEntity<JWTAuthResponse> login(@RequestBody LoginDto loginDto){
+//    	JWTAuthResponse jwtAuthResponse = authService.login(loginDto);
+//    	if (jwtAuthResponse.)
+//        return ResponseEntity.ok(jwtAuthResponse);
+//    }
 
-    
-    @PostMapping(value = {"/register", "/signup"})
-    public ResponseEntity<String> register(@RequestBody RegisterDto registerDto){
-        String response = authService.register(registerDto);
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-    @JsonSerialize
-    @PutMapping("/reset")
-    public ResponseEntity<String> resetPassword(@RequestBody PasswordReset pr){
-    		String response=authService.resetPassword(pr.getPersonalNo(),pr.getNewPassword());
-		return new ResponseEntity<>(response,HttpStatus.CREATED);
-    	
-    }
+	@PostMapping(value = { "/login", "/signin" })
+	public ResponseEntity login(@RequestBody LoginDto loginDto) {
+
+		JWTAuthResponse jwtAuthResponse = authService.login(loginDto);
+		if (jwtAuthResponse == null) {
+			return ResponseEntity.status(401).body("Invalid user!");
+		}
+		return ResponseEntity.ok(jwtAuthResponse);
+	}
+
+	@PostMapping(value = { "/register", "/signup" })
+	public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
+		String response = authService.register(registerDto);
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
+
+	@JsonSerialize
+	@PutMapping("/reset")
+	public ResponseEntity<String> resetPassword(@RequestBody PasswordReset pr) {
+		String response = authService.resetPassword(pr.getPersonalNo(), pr.getNewPassword());
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
 }
