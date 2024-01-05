@@ -37,7 +37,7 @@ public class AuthController {
 
 		JWTAuthResponse jwtAuthResponse = authService.login(loginDto);
 		if (jwtAuthResponse == null) {
-			return ResponseEntity.status(401).body("Invalid user!");
+			return ResponseEntity.status(205).body("Invalid user!");
 		}
 		return ResponseEntity.ok(jwtAuthResponse);
 	}
