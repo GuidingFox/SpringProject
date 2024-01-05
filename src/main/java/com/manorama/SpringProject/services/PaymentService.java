@@ -62,7 +62,6 @@ public class PaymentService {
 		req.append("line_items[0][price_data][product_data][name]=canteenpayment&");
 		req.append("line_items[0][price_data][currency]=inr&");
 		req.append("line_items[0][quantity]=" + quantity + "&");
-		req.append("billing_address_collection=required");
 		return req.toString();
 	}
 
