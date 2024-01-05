@@ -73,8 +73,13 @@ public class OrderController {
 	}
 
 	@GetMapping("/today")
-	public ResponseEntity getDailyOrders() {
-		return orderService.getDailyOrders();
+	public ResponseEntity getDailyOrders(@RequestParam long user_id) {
+		return orderService.getDailyOrders(user_id);
+	}
+	
+	@GetMapping("/admin/today")
+	public ResponseEntity getDailyAdminOrders(@RequestParam long user_id) {
+		return orderService.getDailyOrders(user_id);
 	}
 
 	@GetMapping("/summary")

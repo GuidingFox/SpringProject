@@ -122,7 +122,11 @@ public class OrderService {
 
 	}
 
-	public ResponseEntity getDailyOrders() {
+	public ResponseEntity getDailyOrders(long user_id) {
+		return ResponseEntity.ok(orderRepository.findAllByDateanduserId(new Date(), user_id));
+	}
+	
+	public ResponseEntity getDailyAdminOrders() {
 		return ResponseEntity.ok(orderRepository.findAllByDate(new Date()));
 	}
 
