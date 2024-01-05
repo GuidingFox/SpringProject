@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -23,6 +24,7 @@ import com.manorama.SpringProject.entities.Orders;
 import com.manorama.SpringProject.models.ItemModel;
 import com.manorama.SpringProject.models.OrderModel;
 import com.manorama.SpringProject.models.TransactionModel;
+import com.manorama.SpringProject.models.TxnReturnModel;
 import com.manorama.SpringProject.repositories.ItemsRepository;
 import com.manorama.SpringProject.repositories.OrderItemRepository;
 import com.manorama.SpringProject.repositories.OrderRepository;
@@ -125,7 +127,7 @@ public class OrderService {
 	public ResponseEntity getDailyOrders(long user_id) {
 		return ResponseEntity.ok(orderRepository.findAllByDateanduserId(new Date(), user_id));
 	}
-	
+
 	public ResponseEntity getDailyAdminOrders() {
 		return ResponseEntity.ok(orderRepository.findAllByDate(new Date()));
 	}
@@ -206,7 +208,16 @@ public class OrderService {
 
 	public ResponseEntity getTransactions(TransactionModel txnModel) {
 
-		List<Orders> orders = orderRepository.findAllBetweenDates(txnModel.getStart_date(), txnModel.getEnd_date(), txnModel.getUser_id());
-		return ResponseEntity.ok(orders);
+		List<Orders> orders = orderRepository.findAllBetweenDates(txnModel.getStart_date(), txnModel.getEnd_date(),
+				txnModel.getUser_id());
+		List<TxnReturnModel> txns = new ArrayList<TxnReturnModel>();
+		for (Orders order : orders) {
+			List<TxnReturnModel> txn = order.getItems().stream().map(item -> {
+				return new TxnReturnModel(order.getDate(), order.getCategory(), item.getItems().getName(),
+						item.getQuantity(), item.getQuantity() * item.getItems().getPrice());
+			}).collect(Collectors.toList());
+			txns.addAll(txn);
+		}
+		return ResponseEntity.ok(txns);
 	}
 }
