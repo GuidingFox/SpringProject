@@ -67,7 +67,7 @@ public class PaymentService {
 	}
 
 	public ResponseEntity getCheckout(float amount, long order_id) {
-		Stripe.apiKey = "sk_test_51OPIddSBY2c1xYHV84jmsahFjlMNE09nOJZxU7y87yM0NdWlo6JZlptYnVZPt7075DgLEgXz0bHNi8cmvIeYrVLX00W2DrcWXU";
+		Stripe.apiKey = System.getenv("STRIPE_KEY");
 		String YOUR_DOMAIN = System.getenv("SITE_DOMAIN");
 		String reqData = getRequestString(amount, 1, YOUR_DOMAIN, order_id);
 		HttpResponse<String> response;
