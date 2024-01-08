@@ -62,7 +62,8 @@ public class AuthServiceImpl implements AuthService {
 			String token = jwtTokenProvider.generateToken(authentication);
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			Long userId = user.get().getId();
-			return new JWTAuthResponse(token, userId);
+			Set<Role> role = user.get().getRoles();
+			return new JWTAuthResponse(token, userId, role);
 		} else {
 			return null;
 		}
