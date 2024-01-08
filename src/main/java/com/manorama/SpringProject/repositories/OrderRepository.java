@@ -30,7 +30,7 @@ public interface OrderRepository extends JpaRepository<Orders, Long> {
 	@Query("from Orders s where DATE(s.date) = :date and s.user_id= :user_id")
 	public List<Orders> findAllByDateanduserId(@Param("date") Date date, @Param("user_id") long user_id);
 
-	@Query("from Orders s where DATE(s.date) = :date")
+	@Query("from Orders s where DATE(s.date) = :date and s.paymentStatus='success' order by date desc")
 	public List<Orders> findAllByDate(@Param("date") Date date);
 
 	@Query("from Orders s where DATE(s.date) >= :start_date and DATE(s.date) <= :end_date and s.user_id =:user_id and s.paymentStatus='success' order by date desc")
