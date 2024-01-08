@@ -152,9 +152,14 @@ public class OrderService {
 			for (OrderItems ordItem : ot) {
 				if (ordItem.getItems().getId() == item_id) {
 					orderItemRepository.deleteById(ordItem.getId());
-					return ResponseEntity.ok(orderRepository.findById(order_id).get());
 				}
 			}
+			if (orderRepository.findById(order_id).get().getItems().isEmpty()) {
+				orderRepository.deleteById(order_id);
+				return ResponseEntity.ok("order was empty so order has been deleted");
+
+			}
+			return ResponseEntity.ok(orderRepository.findById(order_id).get());
 		} catch (NoSuchElementException ne) {
 			logger.error("failed to remove item: {}", ne.getMessage());
 			return ResponseEntity.status(422).body("no such item exists");
@@ -162,7 +167,6 @@ public class OrderService {
 			logger.error("some error occurred: {}", e.getMessage());
 			return ResponseEntity.status(500).body("some error occurred: " + e.getMessage());
 		}
-		return ResponseEntity.ok().build();
 	}
 
 	public ResponseEntity updateOrderItems(long order_id, long item_id, int quantity) {

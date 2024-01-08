@@ -1,6 +1,5 @@
 package com.manorama.SpringProject.entities;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,7 +36,8 @@ public class OrderItems {
 		this.quantity = quantity;
 	}
 
-	public OrderItems() {}
+	public OrderItems() {
+	}
 
 	public long getId() {
 		return id;
