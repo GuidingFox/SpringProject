@@ -1,9 +1,13 @@
 package com.manorama.SpringProject.services.impl;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,11 +25,13 @@ import com.manorama.SpringProject.repositories.RoleRepository;
 import com.manorama.SpringProject.repositories.UserRepository;
 import com.manorama.SpringProject.security.JwtTokenProvider;
 import com.manorama.SpringProject.services.AuthService;
+import com.manorama.SpringProject.services.OrderService;
 import com.manorama.SpringProject.services.UserService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
+	Logger logger = LoggerFactory.getLogger(AuthService.class);
 	private AuthenticationManager authenticationManager;
 	private UserRepository userRepository;
 	private RoleRepository roleRepository;
@@ -64,27 +70,34 @@ public class AuthServiceImpl implements AuthService {
 
 
 	@Override
-	public String register(RegisterDto registerDto) {
+	public ResponseEntity register(RegisterDto registerDto) {
 
 		// add check for username exists in database
 
 		// add check for email exists in database
 
-		User user = new User();
-		user.setName(registerDto.getName());
-		user.setUsername(registerDto.getUsername());
-		user.setEmail(registerDto.getEmail());
-		user.setPersonalNo(registerDto.getPersonalNo());
-		user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
+		try {
+			User user = new User();
+			user.setName(registerDto.getName());
+			user.setUsername(registerDto.getUsername());
+			user.setEmail(registerDto.getEmail());
+			user.setPersonalNo(registerDto.getPersonalNo());
+			user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
 
-		Set<Role> roles = new HashSet<>();
-		Role userRole = roleRepository.findByName("ROLE_USER").get();
-		roles.add(userRole);
-		user.setRoles(roles);
+			Set<Role> roles = new HashSet<>();
+			Role userRole = roleRepository.findByName("ROLE_USER").get();
+			roles.add(userRole);
+			user.setRoles(roles);
 
-		userRepository.save(user);
-
-		return "User registered successfully!.";
+			userRepository.save(user);
+			
+			return ResponseEntity.ok("User registered successfully!.");
+//			return "User registered successfully!.";
+		} catch(Exception se) {
+			logger.error("Failed to create new user: " + se.getMessage());
+			return ResponseEntity.internalServerError().body("duplicate user exists");
+		}
+		
 	}
 
 	@Override

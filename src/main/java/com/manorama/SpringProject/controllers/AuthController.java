@@ -43,9 +43,9 @@ public class AuthController {
 	}
 
 	@PostMapping(value = { "/register", "/signup" })
-	public ResponseEntity<String> register(@RequestBody RegisterDto registerDto) {
-		String response = authService.register(registerDto);
-		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	public ResponseEntity register(@RequestBody RegisterDto registerDto) {
+		return authService.register(registerDto);
+//		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 
 	@JsonSerialize
