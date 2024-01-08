@@ -20,7 +20,7 @@ public class OrderItems {
 	private long id;
 
 	@JsonIgnore
-	@ManyToOne(cascade = CascadeType.ALL, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "order_id")
 	private Orders orders;
 

@@ -152,7 +152,7 @@ public class OrderService {
 			for (OrderItems ordItem : ot) {
 				if (ordItem.getItems().getId() == item_id) {
 					orderItemRepository.deleteById(ordItem.getId());
-					return ResponseEntity.ok().build();
+					return ResponseEntity.ok(orderRepository.findById(order_id).get());
 				}
 			}
 		} catch (NoSuchElementException ne) {
@@ -213,8 +213,8 @@ public class OrderService {
 		List<TxnReturnModel> txns = new ArrayList<TxnReturnModel>();
 		for (Orders order : orders) {
 			List<TxnReturnModel> txn = order.getItems().stream().map(item -> {
-				return new TxnReturnModel(order.getId(), order.getDate(), order.getCategory(), item.getItems().getName(),
-						item.getQuantity(), item.getQuantity() * item.getItems().getPrice());
+				return new TxnReturnModel(order.getId(), order.getDate(), order.getCategory(),
+						item.getItems().getName(), item.getQuantity(), item.getQuantity() * item.getItems().getPrice());
 			}).collect(Collectors.toList());
 			txns.addAll(txn);
 		}
